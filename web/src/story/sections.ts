@@ -85,10 +85,11 @@ export const SECTIONS: StorySection[] = [
     text: [
       'A bubble is more than a high price. It is a price that grows explosively, feeding on itself, like a snowball rolling downhill: the bigger it gets, the faster it grows.',
       'The GSADF test looks for exactly this pattern. It slides windows of many different lengths over the price-to-rent series and checks whether growth inside each one has turned explosive instead of steady.',
-      'A second step dates the episodes: it marks the quarter where explosive growth starts and the quarter where it ends. The strip below shows every episode found.',
+      'A second step dates the episodes: it marks the quarter where explosive growth starts and the quarter where it ends. On the map, countries glow while they are in an episode. The strip below shows every episode found.',
     ],
     layer: 'overvaluation',
     camera: SPAIN_IRELAND,
+    autoplay: true,
     panel: 'episodes',
   },
   {

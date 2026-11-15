@@ -1,3 +1,4 @@
+import { useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from './components/Button'
 import { LayerSwitcher } from './components/LayerSwitcher'
@@ -19,6 +20,8 @@ const WIDE_SCREEN_PX = 1024
 const CARD_SPACE_PX = 400
 // How long each quarter stays on screen while playing, in milliseconds.
 const PLAY_STEP_MS = 300
+// An empty list of countries, reused so the map is not redrawn needlessly.
+const NO_COUNTRIES = new Set<string>()
 
 /** True when the window is wide enough for cards and map side by side. */
 function useIsWide() {
@@ -50,6 +53,8 @@ function App() {
   // The interest-rate shock chosen on the stress slider, in basis points.
   const [shockBp, setShockBp] = useState(DEFAULT_SHOCK_BP)
   const isWide = useIsWide()
+  // True when the system setting "reduce motion" is on.
+  const reducedMotion = useReducedMotion() === true
 
   // Load the data files once, when the page opens.
   useEffect(() => {
@@ -105,7 +110,8 @@ function App() {
   const onActiveChange = useCallback(
     (index: number) => {
       setActive(index)
-      if (SECTIONS[index].autoplay) {
+      // With reduced motion, skip the playback and show the latest quarter.
+      if (SECTIONS[index].autoplay && !reducedMotion) {
         // Start from the oldest quarter and play forward.
         setQuarterIndex(0)
         play(true)
@@ -114,7 +120,7 @@ function App() {
         setQuarterIndex(null)
       }
     },
-    [play],
+    [play, reducedMotion],
   )
 
   const togglePlay = () => {
@@ -148,6 +154,17 @@ function App() {
     [data, layerKey, quarter, shockBp],
   )
 
+  // The countries in a bubble episode in the quarter on screen; they glow.
+  // A dimmed map does not glow.
+  const dimmed = !exploring && section.dim === true
+  const bubbleGeos = useMemo(() => {
+    if (!data || !layer || dimmed) return NO_COUNTRIES
+    const inBubble = data.panel
+      .filter((row) => row.quarter === layer.quarter && row.in_bubble === true)
+      .map((row) => row.geo)
+    return inBubble.length > 0 ? new Set(inBubble) : NO_COUNTRIES
+  }, [data, layer, dimmed])
+
   return (
     <div className="bg-bg text-text">
       {/* The map stays fixed in the background while the story scrolls over it. */}
@@ -158,8 +175,11 @@ function App() {
             layer={layer}
             camera={section.camera}
             interactive={exploring}
-            dim={!exploring && section.dim === true}
+            dim={dimmed}
             highlightGeo={exploring ? null : (section.highlightGeo ?? null)}
+            bubbleGeos={bubbleGeos}
+            sway={!exploring && active === 0}
+            reducedMotion={reducedMotion}
             paddingLeft={isWide && !exploring ? CARD_SPACE_PX : 0}
             onSelect={setSelectedGeo}
           />
@@ -170,7 +190,13 @@ function App() {
           </p>
         )}
         {!data && !error && (
-          <p className="absolute inset-0 grid place-items-center text-muted">Loading data…</p>
+          <div role="status" className="absolute inset-0 grid place-items-center">
+            <div className="flex flex-col items-center gap-4">
+              <div className="h-12 w-12 animate-spin rounded-full border-4 border-border border-t-accent motion-reduce:animate-none" />
+              <div className="text-2xl font-bold">Housing Bubble Screener</div>
+              <p className="text-muted">Loading data…</p>
+            </div>
+          </div>
         )}
       </div>
 

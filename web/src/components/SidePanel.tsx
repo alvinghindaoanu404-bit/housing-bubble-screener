@@ -79,7 +79,7 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
       aria-label="Country details"
       aria-hidden={!geo}
       inert={!geo}
-      className={`fixed top-10 right-0 bottom-0 z-20 w-full max-w-sm overflow-y-auto border-l border-border bg-card p-6 shadow-2xl transition-transform duration-300 ${
+      className={`fixed top-10 right-0 bottom-0 z-20 w-full max-w-sm overflow-y-auto border-l border-border bg-card p-6 shadow-2xl transition-transform duration-300 motion-reduce:transition-none ${
         geo ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
@@ -96,7 +96,7 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
               type="button"
               onClick={onClose}
               aria-label="Close country details"
-              className="cursor-pointer rounded-lg border border-border px-3 py-1 text-muted transition duration-150 hover:text-text focus-visible:outline-2 focus-visible:outline-white"
+              className="cursor-pointer rounded-lg border border-border px-3 py-1 text-muted transition duration-150 hover:text-text"
             >
               ✕
             </button>

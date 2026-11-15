@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useRef } from 'react'
 import type { AppData } from '../data/types'
 import { EpisodesTimeline } from '../story/EpisodesTimeline'
@@ -54,6 +55,8 @@ export function Story({ data, shock, onActiveChange, onExplore, hidden }: StoryP
   // The margins shrink that part to a thin line across the middle, so exactly
   // one section is "active" at a time: the one crossing the middle.
   useEffect(() => {
+    // While the map is unlocked the story is hidden, so it stops watching.
+    if (hidden) return
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -68,10 +71,12 @@ export function Story({ data, shock, onActiveChange, onExplore, hidden }: StoryP
       if (section) observer.observe(section)
     }
     return () => observer.disconnect()
-  }, [onActiveChange])
+  }, [onActiveChange, hidden])
 
+  // Jump instead of gliding when the system asks for less motion.
+  const reducedMotion = useReducedMotion()
   const scrollTo = (index: number) =>
-    sectionRefs.current[index]?.scrollIntoView({ behavior: 'smooth' })
+    sectionRefs.current[index]?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' })
 
   const last = SECTIONS.length - 1
 
@@ -87,7 +92,14 @@ export function Story({ data, shock, onActiveChange, onExplore, hidden }: StoryP
           data-index={index}
           className="flex min-h-screen items-center px-4 py-24 lg:px-12"
         >
-          <article className="pointer-events-auto w-full max-w-md rounded-xl border border-border bg-card/95 p-6 shadow-xl">
+          {/* The card fades in and slides up each time it enters the screen. */}
+          <motion.article
+            initial={{ opacity: 0, y: 48 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ amount: 0.15 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="pointer-events-auto w-full max-w-md rounded-xl border border-border bg-card/95 p-6 shadow-xl"
+          >
             <div className="text-sm text-muted">
               {index} / {last}
             </div>
@@ -115,7 +127,7 @@ export function Story({ data, shock, onActiveChange, onExplore, hidden }: StoryP
                 Explore the map
               </Button>
             )}
-          </article>
+          </motion.article>
         </section>
       ))}
     </div>

@@ -22,7 +22,7 @@ export function LayerSwitcher({ value, onChange }: LayerSwitcherProps) {
             type="button"
             aria-pressed={selected}
             onClick={() => onChange(option.key)}
-            className={`cursor-pointer rounded-lg px-3 py-2 text-sm transition duration-150 focus-visible:outline-2 focus-visible:outline-white ${
+            className={`cursor-pointer rounded-lg px-3 py-2 text-sm transition duration-150 ${
               selected ? 'bg-accent font-bold text-white' : 'text-muted hover:text-text'
             }`}
           >

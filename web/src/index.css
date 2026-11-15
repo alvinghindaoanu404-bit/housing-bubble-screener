@@ -1,8 +1,8 @@
 /* Loads Tailwind, so its class names (bg-..., text-..., p-...) work everywhere. */
 @import 'tailwindcss';
 
-/* Design colours from CLAUDE.md section 7.
-   Each line creates Tailwind classes, e.g. --color-bg gives bg-bg and text-bg. */
+/* Design colours and font from CLAUDE.md section 7.
+   Each colour line creates Tailwind classes, e.g. --color-bg gives bg-bg and text-bg. */
 @theme {
   --color-bg: #0b1020;
   --color-card: #121a2e;
@@ -10,10 +10,17 @@
   --color-text: #e6eaf2;
   --color-muted: #8b95ad;
   --color-accent: #4f8cff;
+  --font-sans: 'Inter', system-ui, 'Segoe UI', sans-serif;
 }
 
 body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-text);
+}
+
+/* A visible ring around whatever the keyboard (Tab key) has reached. */
+:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
 }

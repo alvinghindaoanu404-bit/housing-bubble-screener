@@ -1,12 +1,17 @@
-import type { ButtonHTMLAttributes } from 'react'
+import { motion } from 'motion/react'
+import type { HTMLMotionProps } from 'motion/react'
 
-/** The project's standard button: accent colour, grows slightly on hover,
- *  shrinks on press, and shows a focus ring for keyboard users. */
-export function Button({ className = '', ...props }: ButtonHTMLAttributes<HTMLButtonElement>) {
+/** The project's standard button: accent colour, grows slightly with a soft
+ *  glow on hover, shrinks on press. motion.button is a normal button that
+ *  the "motion" library can animate. */
+export function Button({ className = '', ...props }: HTMLMotionProps<'button'>) {
   return (
-    <button
+    <motion.button
       type="button"
-      className={`cursor-pointer rounded-xl bg-accent px-5 py-3 font-bold text-white transition duration-150 hover:scale-[1.04] hover:shadow-[0_0_24px_rgba(79,140,255,0.5)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:scale-[0.97] ${className}`}
+      whileHover={{ scale: 1.04, boxShadow: '0 0 24px rgba(79, 140, 255, 0.55)' }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ duration: 0.17 }}
+      className={`cursor-pointer rounded-xl bg-accent px-5 py-3 font-bold text-white ${className}`}
       {...props}
     />
   )
