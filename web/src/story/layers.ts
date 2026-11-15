@@ -1,3 +1,4 @@
+import { formatShock } from '../data/helpers'
 import type { AppData, PanelRow } from '../data/types'
 
 /** The things the map can show. */
@@ -25,8 +26,8 @@ export interface LayerView {
   digits: number
 }
 
-// Which rate shock the map shows until the slider arrives in M6.
-const STORY_SHOCK_BP = 200
+// Which rate shock the stress slider starts on.
+export const DEFAULT_SHOCK_BP = 200
 
 // For each layer that comes from panel.json: its title, its column, and its
 // decimals. "range" is set only where the scale is fixed by definition
@@ -61,16 +62,25 @@ function fullRange(panel: PanelRow[], field: keyof PanelRow): [number, number] {
   return min === max ? [min, min + 1] : [min, max]
 }
 
-/** Collect the values of one layer for one quarter. */
-export function buildLayer(data: AppData, key: LayerKey, quarter: string): LayerView {
+/** Collect the values of one layer for one quarter.
+ *  shockBp is used only by the stress layer: which rate shock to show. */
+export function buildLayer(
+  data: AppData,
+  key: LayerKey,
+  quarter: string,
+  shockBp: number,
+): LayerView {
   const values = new Map<string, number | null>()
 
   if (key === 'stress') {
     for (const row of data.stress) {
-      if (row.shock_bp === STORY_SHOCK_BP) values.set(row.geo, row.risk_score)
+      if (row.shock_bp === shockBp) values.set(row.geo, row.risk_score)
     }
     return {
-      title: `Risk score after a +${STORY_SHOCK_BP} bp rate shock`,
+      title:
+        shockBp === 0
+          ? 'Risk score with no rate shock'
+          : `Risk score after a ${formatShock(shockBp)} rate shock`,
       quarter: data.meta.last_quarter,
       values,
       min: 0,

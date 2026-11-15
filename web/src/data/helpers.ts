@@ -13,6 +13,11 @@ export function countryName(data: AppData, geo: string) {
   return feature ? feature.properties.name : geo
 }
 
+/** Write a rate shock with its sign and unit: 200 → "+200 bp", -100 → "-100 bp". */
+export function formatShock(shockBp: number) {
+  return `${shockBp > 0 ? '+' : ''}${shockBp} bp`
+}
+
 /** The text for a "Source: ..." line, built from meta.json. */
 export function sourceText(data: AppData) {
   return data.meta.sources.map((s) => `${s.name} (${s.code})`).join(' · ')

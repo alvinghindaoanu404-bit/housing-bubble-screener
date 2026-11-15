@@ -3,13 +3,14 @@ import { Button } from './components/Button'
 import { LayerSwitcher } from './components/LayerSwitcher'
 import { Legend } from './components/Legend'
 import { Map3D } from './components/Map3D'
+import { ShockSlider } from './components/ShockSlider'
 import { SidePanel } from './components/SidePanel'
 import { Story } from './components/Story'
 import { TimeSlider } from './components/TimeSlider'
 import { quarterNumber, sourceText } from './data/helpers'
 import { loadData } from './data/loadData'
 import type { AppData } from './data/types'
-import { buildLayer, hasTimeline } from './story/layers'
+import { buildLayer, DEFAULT_SHOCK_BP, hasTimeline } from './story/layers'
 import type { LayerKey } from './story/layers'
 import { SECTIONS } from './story/sections'
 
@@ -46,6 +47,8 @@ function App() {
   const [quarterIndex, setQuarterIndex] = useState<number | null>(null)
   // True while the map is playing through the quarters.
   const [playing, setPlaying] = useState(false)
+  // The interest-rate shock chosen on the stress slider, in basis points.
+  const [shockBp, setShockBp] = useState(DEFAULT_SHOCK_BP)
   const isWide = useIsWide()
 
   // Load the data files once, when the page opens.
@@ -66,6 +69,15 @@ function App() {
     const unique = [...new Set(data.panel.map((row) => row.quarter))]
     return unique.sort((a, b) => quarterNumber(a) - quarterNumber(b))
   }, [data])
+  // Every rate shock in stress.json, smallest first, for the stress slider.
+  const shock = useMemo(
+    () => ({
+      shocks: data ? [...new Set(data.stress.map((row) => row.shock_bp))].sort((a, b) => a - b) : [],
+      value: shockBp,
+      onChange: setShockBp,
+    }),
+    [data, shockBp],
+  )
   const lastIndex = quarters.length - 1
   const shownIndex = quarterIndex ?? lastIndex
 
@@ -132,8 +144,8 @@ function App() {
 
   // The values the map should show right now.
   const layer = useMemo(
-    () => (data && quarter ? buildLayer(data, layerKey, quarter) : null),
-    [data, layerKey, quarter],
+    () => (data && quarter ? buildLayer(data, layerKey, quarter, shockBp) : null),
+    [data, layerKey, quarter, shockBp],
   )
 
   return (
@@ -174,6 +186,7 @@ function App() {
       {data && (
         <Story
           data={data}
+          shock={shock}
           onActiveChange={onActiveChange}
           onExplore={enterExplore}
           hidden={exploring}
@@ -198,17 +211,23 @@ function App() {
           </div>
 
           <div className="fixed bottom-4 left-[18rem] z-20 w-[min(36rem,calc(100vw-19rem))]">
-            <TimeSlider
-              quarters={quarters}
-              index={shownIndex}
-              onChange={(index) => {
-                play(false)
-                setQuarterIndex(index)
-              }}
-              playing={playing}
-              onTogglePlay={togglePlay}
-              disabled={!hasTimeline(exploreLayer)}
-            />
+            {hasTimeline(exploreLayer) ? (
+              <TimeSlider
+                quarters={quarters}
+                index={shownIndex}
+                onChange={(index) => {
+                  play(false)
+                  setQuarterIndex(index)
+                }}
+                playing={playing}
+                onTogglePlay={togglePlay}
+              />
+            ) : (
+              // The stress test has no history: show the shock slider instead.
+              <div className="rounded-xl border border-border bg-card px-4 py-3">
+                <ShockSlider {...shock} />
+              </div>
+            )}
           </div>
 
           <SidePanel data={data} geo={selectedGeo} onClose={closePanel} />

@@ -6,10 +6,14 @@ import { MortgageCalculator } from '../story/MortgageCalculator'
 import { RomaniaPanel } from '../story/RomaniaPanel'
 import { SECTIONS } from '../story/sections'
 import type { PanelKey } from '../story/sections'
+import { StressPanel } from '../story/StressPanel'
 import { Button } from './Button'
+import type { ShockControl } from './ShockSlider'
 
 interface StoryProps {
   data: AppData
+  /** The stress slider's state, shared with the map. */
+  shock: ShockControl
   /** Called with the number of the section that is now in the middle of the screen. */
   onActiveChange: (index: number) => void
   /** Called when the user presses "Explore the map". */
@@ -19,8 +23,18 @@ interface StoryProps {
 }
 
 /** Draw the interactive piece that belongs to a card. */
-function Panel({ panel, data }: { panel: PanelKey; data: AppData }) {
+function Panel({
+  panel,
+  data,
+  shock,
+}: {
+  panel: PanelKey
+  data: AppData
+  shock: ShockControl
+}) {
   switch (panel) {
+    case 'stress':
+      return <StressPanel data={data} control={shock} />
     case 'calculator':
       return <MortgageCalculator />
     case 'episodes':
@@ -33,7 +47,7 @@ function Panel({ panel, data }: { panel: PanelKey; data: AppData }) {
 }
 
 /** The story: one full-screen section per step, each holding a text card. */
-export function Story({ data, onActiveChange, onExplore, hidden }: StoryProps) {
+export function Story({ data, shock, onActiveChange, onExplore, hidden }: StoryProps) {
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
 
   // An IntersectionObserver tells us when an element enters part of the screen.
@@ -89,7 +103,7 @@ export function Story({ data, onActiveChange, onExplore, hidden }: StoryProps) {
               </p>
             ))}
 
-            {section.panel && <Panel panel={section.panel} data={data} />}
+            {section.panel && <Panel panel={section.panel} data={data} shock={shock} />}
 
             {index === 0 && (
               <Button className="mt-6" onClick={() => scrollTo(1)}>

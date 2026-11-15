@@ -12,7 +12,7 @@ export interface Camera {
 }
 
 /** The interactive pieces a card can contain, below its text. */
-export type PanelKey = 'calculator' | 'episodes' | 'metrics' | 'romania'
+export type PanelKey = 'calculator' | 'episodes' | 'metrics' | 'stress' | 'romania'
 
 /** One step of the scroll story (CLAUDE.md section 6). */
 export interface StorySection {
@@ -117,10 +117,11 @@ export const SECTIONS: StorySection[] = [
     text: [
       'What if interest rates rose further? The stress test recalculates the risk score under a rate shock. Shocks are measured in basis points (bp): 100 bp is one percentage point.',
       'Markets where the score climbs the most are the ones most exposed to a rate rise.',
-      'The map shows the risk score after a +200 bp shock.',
+      'Move the slider and watch the map rise and fall.',
     ],
     layer: 'stress',
     camera: EUROPE_MEDIUM,
+    panel: 'stress',
   },
   {
     title: 'Romania',
