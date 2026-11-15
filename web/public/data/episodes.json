@@ -1,0 +1,158 @@
+[
+ {
+  "geo": "AT",
+  "start": "2014-Q2",
+  "end": "2016-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "BE",
+  "start": "2012-Q3",
+  "end": "2013-Q2",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "BE",
+  "start": "2021-Q4",
+  "end": "2022-Q4",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "BG",
+  "start": "2022-Q3",
+  "end": "2024-Q2",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "HR",
+  "start": "2020-Q2",
+  "end": "2022-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "CY",
+  "start": "2018-Q1",
+  "end": "2019-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "CZ",
+  "start": "2011-Q1",
+  "end": "2013-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "DK",
+  "start": "2016-Q2",
+  "end": "2017-Q2",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "EE",
+  "start": "2012-Q4",
+  "end": "2014-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "FI",
+  "start": "2015-Q1",
+  "end": "2015-Q4",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "FR",
+  "start": "2018-Q1",
+  "end": "2018-Q4",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "FR",
+  "start": "2019-Q2",
+  "end": "2020-Q2",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "DE",
+  "start": "2020-Q4",
+  "end": "2022-Q2",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "EL",
+  "start": "2023-Q2",
+  "end": "2025-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "HU",
+  "start": "2018-Q1",
+  "end": "2019-Q4",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "IE",
+  "start": "2017-Q3",
+  "end": "2019-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "IT",
+  "start": "2022-Q3",
+  "end": "2024-Q3",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "LV",
+  "start": "2017-Q4",
+  "end": "2019-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "LT",
+  "start": "2011-Q4",
+  "end": "2012-Q4",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "MT",
+  "start": "2015-Q4",
+  "end": "2017-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "NL",
+  "start": "2020-Q1",
+  "end": "2022-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "PL",
+  "start": "2023-Q3",
+  "end": "2025-Q1",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "PT",
+  "start": "2013-Q3",
+  "end": "2014-Q2",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "RO",
+  "start": "2022-Q2",
+  "end": "2024-Q2",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "SK",
+  "start": "2021-Q2",
+  "end": "2022-Q2",
+  "series": "price_to_rent"
+ },
+ {
+  "geo": "ES",
+  "start": "2014-Q1",
+  "end": "2015-Q1",
+  "series": "price_to_rent"
+ }
+]

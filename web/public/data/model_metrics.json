@@ -1,0 +1,31 @@
+{
+ "train_end": "2016-Q4",
+ "test_start": "2017-Q1",
+ "auroc": 0.76,
+ "hit_rate": 0.71,
+ "false_alarm_rate": 0.27,
+ "missed": [
+  {
+   "geo": "HR",
+   "start": "2020-Q2"
+  },
+  {
+   "geo": "LV",
+   "start": "2017-Q4"
+  }
+ ],
+ "false_alarms": [
+  {
+   "geo": "IT",
+   "quarter": "2017-Q3"
+  },
+  {
+   "geo": "BE",
+   "quarter": "2025-Q2"
+  },
+  {
+   "geo": "FR",
+   "quarter": "2026-Q2"
+  }
+ ]
+}
