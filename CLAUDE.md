@@ -143,9 +143,10 @@ Each section is a text card on one side of the screen while the 3D map stays fix
 ## 7. Design and animation spec
 
 **Look**
-- Dark theme. Background `#0B1020`, cards `#121A2E` with a subtle 1px border `#24304D`, text `#E6EAF2`, secondary text `#8B95AD`.
-- One accent colour, `#4F8CFF`, for buttons and highlights.
-- Risk colour ramp (low → high): `#2D6CDF` → `#3FB8AF` → `#F2C14E` → `#F2784B` → `#E0414B`.
+- Palette: **Egyptian blue, stone blue, and a little scarlet**. The colours live in two files that must stay in step: `web/src/index.css` (Tailwind classes) and `web/src/theme.ts` (map and charts). Never write a colour code directly in a component.
+- Dark theme in deep shades of Egyptian blue. Background `#060C24`, cards `#0D1840` with a subtle 1px border `#253878`, text `#EAF0F8`, secondary text in stone blue `#93A7BE`. Light stone blue `#A9BCD0` for the demo banner and chart lines.
+- One accent colour, scarlet, for buttons, sliders and small highlights: `#E62000` as a fill (deepened slightly so white text stays readable) and `#FF6A4D` for small text and marks on the dark background.
+- Risk colour ramp (low → high): Egyptian blue `#1034A6` → `#4F74C4` → stone blue `#A9BCD0` → `#F07A5E` → scarlet `#FF2400`. Missing data is neutral grey `#454C5E`.
 - Font: Inter. Big, bold section titles; 16px body text.
 - 8px spacing grid, 12px rounded corners.
 - Always show a small legend for the active map layer.

@@ -35,7 +35,7 @@ export function EpisodesTimeline({ data }: { data: AppData }) {
                     <div
                       key={e.start}
                       title={`${countryName(data, geo)}: ${e.start} to ${e.end}`}
-                      className="absolute inset-y-0 rounded-sm bg-[#F2784B]"
+                      className="absolute inset-y-0 rounded-sm bg-accent-soft"
                       style={{
                         left: `${(start / total) * 100}%`,
                         width: `${(length / total) * 100}%`,

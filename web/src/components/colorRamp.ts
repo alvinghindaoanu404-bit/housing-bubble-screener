@@ -1,13 +1,10 @@
-// The risk colour ramp from CLAUDE.md section 7 (low → high).
-export const RAMP_HEX = ['#2D6CDF', '#3FB8AF', '#F2C14E', '#F2784B', '#E0414B']
-
-/** Colour for countries with missing data. */
-export const NO_DATA_HEX = '#3A435C'
+import { NO_DATA_HEX, RAMP_HEX } from '../theme'
 
 /** A colour as [red, green, blue], each from 0 to 255 (the format deck.gl uses). */
 export type RGB = [number, number, number]
 
-function hexToRgb(hex: string): RGB {
+/** Turn "#1034A6" into [16, 52, 166]. */
+export function hexToRgb(hex: string): RGB {
   const value = parseInt(hex.slice(1), 16)
   return [(value >> 16) & 255, (value >> 8) & 255, value & 255]
 }

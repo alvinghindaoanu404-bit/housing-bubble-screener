@@ -185,7 +185,7 @@ function App() {
           />
         )}
         {error && (
-          <p role="alert" className="absolute inset-0 grid place-items-center text-[#E0414B]">
+          <p role="alert" className="absolute inset-0 grid place-items-center text-accent-soft">
             The data could not be loaded: {error}
           </p>
         )}
@@ -203,7 +203,7 @@ function App() {
       {data?.meta.data_status === 'demo' && (
         <div
           role="status"
-          className="fixed inset-x-0 top-0 z-30 bg-[#F2C14E] px-4 py-2 text-center font-bold text-[#0B1020]"
+          className="fixed inset-x-0 top-0 z-30 bg-stone px-4 py-2 text-center font-bold text-bg"
         >
           DEMO DATA — not thesis results
         </div>

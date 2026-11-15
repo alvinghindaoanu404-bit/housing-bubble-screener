@@ -1,5 +1,5 @@
 import type { LayerView } from '../story/layers'
-import { NO_DATA_HEX, RAMP_HEX } from './colorRamp'
+import { NO_DATA_HEX, RAMP_HEX } from '../theme'
 
 interface LegendProps {
   layer: LayerView

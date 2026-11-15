@@ -6,7 +6,8 @@ import { useEffect, useMemo, useState } from 'react'
 import type { CountriesGeoJSON, CountryFeature } from '../data/types'
 import type { LayerView } from '../story/layers'
 import type { Camera } from '../story/sections'
-import { rampColor } from './colorRamp'
+import { COLORS } from '../theme'
+import { hexToRgb, rampColor } from './colorRamp'
 import type { RGB } from './colorRamp'
 
 // How far the user may zoom out and in.
@@ -20,14 +21,14 @@ const MAX_HEIGHT_M = 350_000
 // A thin slab for countries with no data, so they stay visible and hoverable.
 const NO_DATA_HEIGHT_M = 4_000
 // The page background, used to darken countries.
-const BACKGROUND: RGB = [11, 16, 32]
+const BACKGROUND: RGB = hexToRgb(COLORS.bg)
 // The hero map sways gently: this many degrees each way, once per this many seconds,
 // starting after the camera flight has finished.
 const SWAY_DEGREES = 12
 const SWAY_PERIOD_S = 24
 const SWAY_DELAY_S = 2
 // Countries in a bubble episode glow: a light overlay that fades in and out.
-const GLOW_COLOR: RGB = [255, 236, 200]
+const GLOW_COLOR: RGB = [226, 236, 248]
 const GLOW_PERIOD_S = 1.6
 // The tooltip flips to the left of the mouse this close to the right edge.
 const TOOLTIP_FLIP_PX = 240
@@ -187,7 +188,7 @@ export function Map3D({
           if (highlightGeo && country.properties.geo !== highlightGeo) return darken(color, 0.75)
           return color
         },
-        getLineColor: [11, 16, 32, 160],
+        getLineColor: [...BACKGROUND, 160],
         material: { ambient: 0.55, diffuse: 0.6, shininess: 20 },
         pickable: true, // lets the mouse "feel" the countries
         autoHighlight: true,
@@ -281,7 +282,7 @@ export function Map3D({
             </span>
           </div>
           {bubbleGeos.has(hover.geo) && (
-            <div className="text-xs text-[#F2784B]">In a bubble episode</div>
+            <div className="text-xs text-accent-soft">In a bubble episode</div>
           )}
           <div className="text-xs text-muted">{layer.quarter}</div>
         </div>

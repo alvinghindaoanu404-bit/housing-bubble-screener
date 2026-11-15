@@ -63,7 +63,7 @@ export function MortgageCalculator() {
 
       <div className="mt-4 border-t border-border pt-3">
         <div className="text-sm text-muted">Monthly payment over {YEARS} years</div>
-        <div className="text-3xl font-bold text-accent">{euros.format(payment)}</div>
+        <div className="text-3xl font-bold text-accent-soft">{euros.format(payment)}</div>
         <ul className="mt-2 flex flex-col gap-1 text-sm text-muted">
           <li>
             One percentage point more would add{' '}

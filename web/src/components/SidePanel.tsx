@@ -11,7 +11,7 @@ import {
 } from 'recharts'
 import { countryName, sourceText } from '../data/helpers'
 import type { AppData } from '../data/types'
-import { RAMP_HEX } from './colorRamp'
+import { COLORS, RAMP_HEX } from '../theme'
 import { StressTiles } from './StressTiles'
 
 interface SidePanelProps {
@@ -22,10 +22,10 @@ interface SidePanelProps {
 }
 
 // Shared look of the charts.
-const AXIS_TICK = { fill: '#8B95AD', fontSize: 11 }
+const AXIS_TICK = { fill: COLORS.muted, fontSize: 11 }
 const TOOLTIP_STYLE = {
-  background: '#121A2E',
-  border: '1px solid #24304D',
+  background: COLORS.card,
+  border: `1px solid ${COLORS.border}`,
   borderRadius: 12,
   fontSize: 12,
 }
@@ -114,12 +114,12 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
           <h3 className="mt-6 font-bold">Price-to-rent</h3>
           <div className="text-xs text-muted">
             1.0 = long-run average ·{' '}
-            <span className="text-[#F2784B]">shaded = bubble episode</span>
+            <span className="text-accent-soft">shaded = bubble episode</span>
           </div>
           <div className="mt-2 h-40">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={history} margin={{ top: 4, right: 8, bottom: 0, left: -16 }}>
-                <CartesianGrid stroke="#24304D" vertical={false} />
+                <CartesianGrid stroke={COLORS.border} vertical={false} />
                 <XAxis dataKey="quarter" tick={AXIS_TICK} tickFormatter={yearOf} interval={15} />
                 <YAxis tick={AXIS_TICK} domain={['auto', 'auto']} />
                 <Tooltip contentStyle={TOOLTIP_STYLE} />
@@ -128,7 +128,7 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
                     key={e.start}
                     x1={e.start}
                     x2={e.end}
-                    fill="#F2784B"
+                    fill={COLORS.accentSoft}
                     fillOpacity={0.3}
                     stroke="none"
                   />
@@ -136,7 +136,7 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
                 <Line
                   dataKey="price_to_rent"
                   name="Price-to-rent"
-                  stroke="#4F8CFF"
+                  stroke={COLORS.stone}
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={false}
@@ -148,20 +148,20 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
 
           <h3 className="mt-6 font-bold">Interest rates (%)</h3>
           <div className="text-xs">
-            <span className="text-[#F2C14E]">— nominal</span>{' '}
-            <span className="ml-2 text-[#3FB8AF]">— real</span>
+            <span className="text-stone">— nominal</span>{' '}
+            <span className="ml-2" style={{ color: COLORS.egyptianBright }}>— real</span>
           </div>
           <div className="mt-2 h-40">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={history} margin={{ top: 4, right: 8, bottom: 0, left: -16 }}>
-                <CartesianGrid stroke="#24304D" vertical={false} />
+                <CartesianGrid stroke={COLORS.border} vertical={false} />
                 <XAxis dataKey="quarter" tick={AXIS_TICK} tickFormatter={yearOf} interval={15} />
                 <YAxis tick={AXIS_TICK} domain={['auto', 'auto']} />
                 <Tooltip contentStyle={TOOLTIP_STYLE} />
                 <Line
                   dataKey="rate_nominal"
                   name="Nominal rate"
-                  stroke="#F2C14E"
+                  stroke={COLORS.stone}
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={false}
@@ -169,7 +169,7 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
                 <Line
                   dataKey="rate_real"
                   name="Real rate"
-                  stroke="#3FB8AF"
+                  stroke={COLORS.egyptianBright}
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={false}

@@ -46,7 +46,7 @@ export function ModelMetricsCard({ data }: { data: AppData }) {
 
       <div className="mt-3 grid grid-cols-2 gap-4 text-sm">
         <div>
-          <div className="font-bold text-[#E0414B]">Missed episodes</div>
+          <div className="font-bold text-accent-soft">Missed episodes</div>
           <ul className="mt-1 text-muted">
             {metrics.missed.length === 0 && <li>None</li>}
             {metrics.missed.map((item) => (
@@ -57,7 +57,7 @@ export function ModelMetricsCard({ data }: { data: AppData }) {
           </ul>
         </div>
         <div>
-          <div className="font-bold text-[#F2C14E]">False alarms</div>
+          <div className="font-bold text-stone">False alarms</div>
           <ul className="mt-1 text-muted">
             {metrics.false_alarms.length === 0 && <li>None</li>}
             {metrics.false_alarms.map((item) => (
