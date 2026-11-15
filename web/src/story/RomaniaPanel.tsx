@@ -1,3 +1,4 @@
+import { StressTiles } from '../components/StressTiles'
 import { sourceText } from '../data/helpers'
 import type { AppData, PanelRow } from '../data/types'
 
@@ -29,9 +30,6 @@ export function RomaniaPanel({ data }: { data: AppData }) {
   const quarter = data.meta.last_quarter
   const latest = data.panel.filter((row) => row.quarter === quarter)
   const romania = latest.find((row) => row.geo === GEO)
-  const stress = data.stress
-    .filter((row) => row.geo === GEO)
-    .sort((a, b) => a.shock_bp - b.shock_bp)
 
   return (
     <div className="mt-4 rounded-xl border border-border bg-bg p-4">
@@ -63,16 +61,8 @@ export function RomaniaPanel({ data }: { data: AppData }) {
       </table>
 
       <div className="mt-4 text-sm font-bold">Risk score under rate shocks</div>
-      <div className="mt-2 grid grid-cols-5 gap-1 text-center">
-        {stress.map((row) => (
-          <div key={row.shock_bp} className="rounded-lg border border-border bg-card py-2">
-            <div className="text-xs text-muted">
-              {row.shock_bp > 0 ? '+' : ''}
-              {row.shock_bp} bp
-            </div>
-            <div className="font-bold">{show(row.risk_score, 2)}</div>
-          </div>
-        ))}
+      <div className="mt-2">
+        <StressTiles data={data} geo={GEO} />
       </div>
 
       <p className="mt-3 text-xs text-muted">

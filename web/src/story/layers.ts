@@ -3,6 +3,15 @@ import type { AppData, PanelRow } from '../data/types'
 /** The things the map can show. */
 export type LayerKey = 'risk' | 'hpi' | 'overvaluation' | 'rate' | 'stress'
 
+/** The buttons of the layer switcher in explore mode, in display order. */
+export const LAYER_OPTIONS: { key: LayerKey; label: string }[] = [
+  { key: 'hpi', label: 'Real prices' },
+  { key: 'overvaluation', label: 'Overvaluation' },
+  { key: 'rate', label: 'Interest rates' },
+  { key: 'risk', label: 'Risk score' },
+  { key: 'stress', label: 'Stress test' },
+]
+
 /** Everything the map and the legend need to draw one layer. */
 export interface LayerView {
   title: string
@@ -16,7 +25,7 @@ export interface LayerView {
   digits: number
 }
 
-// Which rate shock the story shows until the slider arrives in M6.
+// Which rate shock the map shows until the slider arrives in M6.
 const STORY_SHOCK_BP = 200
 
 // For each layer that comes from panel.json: its title, its column, and its
@@ -32,12 +41,23 @@ const PANEL_LAYERS: Record<
   rate: { title: 'Real interest rate (%)', field: 'rate_real', digits: 2 },
 }
 
-/** The smallest and largest value shown, ignoring missing ones. */
-function rangeOf(values: Map<string, number | null>): [number, number] {
-  const numbers = [...values.values()].filter((v): v is number => v !== null)
-  if (numbers.length === 0) return [0, 1]
-  const min = Math.min(...numbers)
-  const max = Math.max(...numbers)
+/** True for layers that have a value for every quarter (so the time slider applies). */
+export function hasTimeline(key: LayerKey) {
+  return key !== 'stress'
+}
+
+/** The smallest and largest value of one column over ALL quarters and countries.
+ *  Using one scale for every quarter keeps colours comparable through time. */
+function fullRange(panel: PanelRow[], field: keyof PanelRow): [number, number] {
+  let min = Infinity
+  let max = -Infinity
+  for (const row of panel) {
+    const value = row[field]
+    if (typeof value !== 'number') continue
+    if (value < min) min = value
+    if (value > max) max = value
+  }
+  if (min === Infinity) return [0, 1]
   return min === max ? [min, min + 1] : [min, max]
 }
 
@@ -63,6 +83,6 @@ export function buildLayer(data: AppData, key: LayerKey, quarter: string): Layer
   for (const row of data.panel) {
     if (row.quarter === quarter) values.set(row.geo, row[layer.field] as number | null)
   }
-  const [min, max] = layer.range ?? rangeOf(values)
+  const [min, max] = layer.range ?? fullRange(data.panel, layer.field)
   return { title: layer.title, quarter, values, min, max, digits: layer.digits }
 }

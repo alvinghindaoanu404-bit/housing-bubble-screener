@@ -23,6 +23,8 @@ export interface StorySection {
   camera: Camera
   /** The interactive piece shown under the text, if any. */
   panel?: PanelKey
+  /** Play the map through all the quarters when this section appears. */
+  autoplay?: boolean
   /** Darken the whole map (the text is the focus). */
   dim?: boolean
   /** Keep this country bright and darken the rest. */
@@ -62,10 +64,11 @@ export const SECTIONS: StorySection[] = [
     text: [
       'The house price index (HPI) tracks how home prices change over time. It is an index, not a price in euros: the base year {base_year} is set to 100, so a value of 120 means prices are 20% above that year.',
       'Nominal prices are the prices people actually pay. Real prices remove general inflation, so a rise in real prices means homes became more expensive compared with everything else. The thesis works with real prices.',
-      'On the map, taller and redder countries have a higher real price index.',
+      'On the map, taller and redder countries have a higher real price index. Watch it play through the years; the quarter is shown in the legend.',
     ],
     layer: 'hpi',
     camera: EUROPE_MEDIUM,
+    autoplay: true,
   },
   {
     title: 'Prices vs fundamentals',

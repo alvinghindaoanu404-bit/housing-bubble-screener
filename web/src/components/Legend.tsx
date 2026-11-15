@@ -4,14 +4,18 @@ import { NO_DATA_HEX, RAMP_HEX } from './colorRamp'
 interface LegendProps {
   layer: LayerView
   source: string
+  /** Which bottom corner to sit in. */
+  side: 'left' | 'right'
 }
 
 /** A small box explaining what the colours and heights on the map mean. */
-export function Legend({ layer, source }: LegendProps) {
+export function Legend({ layer, source, side }: LegendProps) {
   return (
     <aside
       aria-label="Map legend"
-      className="fixed right-4 bottom-4 z-20 w-64 rounded-xl border border-border bg-card p-4"
+      className={`fixed bottom-4 z-20 w-64 rounded-xl border border-border bg-card p-4 ${
+        side === 'left' ? 'left-4' : 'right-4'
+      }`}
     >
       <div className="font-bold">{layer.title}</div>
       <div className="text-xs text-muted">Height and colour · {layer.quarter}</div>

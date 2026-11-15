@@ -57,6 +57,8 @@ interface Map3DProps {
   highlightGeo: string | null
   /** Empty space (pixels) on the left, so the map centres beside the cards. */
   paddingLeft: number
+  /** Called with a country code when a country is clicked (only while interactive). */
+  onSelect: (geo: string) => void
 }
 
 interface Hover {
@@ -74,6 +76,7 @@ export function Map3D({
   dim,
   highlightGeo,
   paddingLeft,
+  onSelect,
 }: Map3DProps) {
   const [hover, setHover] = useState<Hover | null>(null)
   const { values, min, max } = layer
@@ -159,6 +162,10 @@ export function Map3D({
         controller={interactive ? true : LOCKED_CONTROLLER}
         layers={[countriesLayer]}
         onHover={onHover}
+        onClick={(info) => {
+          const feature = info.object as CountryFeature | undefined
+          if (interactive && feature) onSelect(feature.properties.geo)
+        }}
         getCursor={({ isDragging, isHovering }) => {
           if (isHovering) return 'pointer'
           if (!interactive) return 'default'

@@ -1,17 +1,23 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from './components/Button'
+import { LayerSwitcher } from './components/LayerSwitcher'
 import { Legend } from './components/Legend'
 import { Map3D } from './components/Map3D'
+import { SidePanel } from './components/SidePanel'
 import { Story } from './components/Story'
-import { sourceText } from './data/helpers'
+import { TimeSlider } from './components/TimeSlider'
+import { quarterNumber, sourceText } from './data/helpers'
 import { loadData } from './data/loadData'
 import type { AppData } from './data/types'
-import { buildLayer } from './story/layers'
+import { buildLayer, hasTimeline } from './story/layers'
+import type { LayerKey } from './story/layers'
 import { SECTIONS } from './story/sections'
 
 // On screens at least this wide, the map is centred beside the story cards.
 const WIDE_SCREEN_PX = 1024
 const CARD_SPACE_PX = 400
+// How long each quarter stays on screen while playing, in milliseconds.
+const PLAY_STEP_MS = 300
 
 /** True when the window is wide enough for cards and map side by side. */
 function useIsWide() {
@@ -33,6 +39,13 @@ function App() {
   const [active, setActive] = useState(0)
   // True after "Explore the map" is pressed: the cards hide and the map unlocks.
   const [exploring, setExploring] = useState(false)
+  // Explore mode: the layer chosen in the switcher, and the clicked country.
+  const [exploreLayer, setExploreLayer] = useState<LayerKey>('risk')
+  const [selectedGeo, setSelectedGeo] = useState<string | null>(null)
+  // The position of the quarter shown on the map; null means "the latest".
+  const [quarterIndex, setQuarterIndex] = useState<number | null>(null)
+  // True while the map is playing through the quarters.
+  const [playing, setPlaying] = useState(false)
   const isWide = useIsWide()
 
   // Load the data files once, when the page opens.
@@ -47,12 +60,80 @@ function App() {
     document.body.style.overflow = exploring ? 'hidden' : ''
   }, [exploring])
 
-  const section = SECTIONS[active]
+  // Every quarter in the data, oldest first.
+  const quarters = useMemo(() => {
+    if (!data) return []
+    const unique = [...new Set(data.panel.map((row) => row.quarter))]
+    return unique.sort((a, b) => quarterNumber(a) - quarterNumber(b))
+  }, [data])
+  const lastIndex = quarters.length - 1
+  const shownIndex = quarterIndex ?? lastIndex
 
-  // The values the map should show for the active section.
+  // A ref is a value that can be read instantly, without waiting for a redraw.
+  // It mirrors "playing", so a tick that was already scheduled can tell that
+  // playback was stopped in the meantime and must not move the quarter.
+  const playingRef = useRef(false)
+  const play = useCallback((on: boolean) => {
+    playingRef.current = on
+    setPlaying(on)
+  }, [])
+
+  // While playing, step to the next quarter after a short wait; stop at the end.
+  useEffect(() => {
+    if (!playing) return
+    const timer = setTimeout(() => {
+      if (!playingRef.current) return
+      if (shownIndex >= lastIndex) play(false)
+      else setQuarterIndex(shownIndex + 1)
+    }, PLAY_STEP_MS)
+    return () => clearTimeout(timer)
+  }, [playing, shownIndex, lastIndex, play])
+
+  // Called by the story when a new section reaches the middle of the screen.
+  const onActiveChange = useCallback(
+    (index: number) => {
+      setActive(index)
+      if (SECTIONS[index].autoplay) {
+        // Start from the oldest quarter and play forward.
+        setQuarterIndex(0)
+        play(true)
+      } else {
+        play(false)
+        setQuarterIndex(null)
+      }
+    },
+    [play],
+  )
+
+  const togglePlay = () => {
+    // Pressing play at the end starts again from the beginning.
+    if (!playing && shownIndex >= lastIndex) setQuarterIndex(0)
+    play(!playing)
+  }
+
+  const enterExplore = () => {
+    play(false)
+    setQuarterIndex(null)
+    setExploring(true)
+  }
+
+  const leaveExplore = () => {
+    setExploring(false)
+    setSelectedGeo(null)
+    play(false)
+    setQuarterIndex(null)
+  }
+
+  const closePanel = useCallback(() => setSelectedGeo(null), [])
+
+  const section = SECTIONS[active]
+  const layerKey = exploring ? exploreLayer : section.layer
+  const quarter = quarters[shownIndex]
+
+  // The values the map should show right now.
   const layer = useMemo(
-    () => (data ? buildLayer(data, section.layer, data.meta.last_quarter) : null),
-    [data, section.layer],
+    () => (data && quarter ? buildLayer(data, layerKey, quarter) : null),
+    [data, layerKey, quarter],
   )
 
   return (
@@ -68,6 +149,7 @@ function App() {
             dim={!exploring && section.dim === true}
             highlightGeo={exploring ? null : (section.highlightGeo ?? null)}
             paddingLeft={isWide && !exploring ? CARD_SPACE_PX : 0}
+            onSelect={setSelectedGeo}
           />
         )}
         {error && (
@@ -92,26 +174,49 @@ function App() {
       {data && (
         <Story
           data={data}
-          onActiveChange={setActive}
-          onExplore={() => setExploring(true)}
+          onActiveChange={onActiveChange}
+          onExplore={enterExplore}
           hidden={exploring}
         />
       )}
 
-      {exploring && (
-        <div className="fixed top-14 left-4 z-20 flex items-center gap-4">
-          <Button onClick={() => setExploring(false)}>← Back to story</Button>
-          <span className="text-sm text-muted">
-            Drag to move · scroll to zoom · right-drag to rotate and tilt
-          </span>
-        </div>
+      {data && exploring && (
+        <>
+          <div className="fixed top-14 left-4 z-20 flex flex-col items-start gap-3">
+            <Button onClick={leaveExplore}>← Back to story</Button>
+            <LayerSwitcher
+              value={exploreLayer}
+              onChange={(key) => {
+                setExploreLayer(key)
+                // The stress test has no history, so stop playing.
+                if (!hasTimeline(key)) play(false)
+              }}
+            />
+            <p className="text-sm text-muted">
+              Drag to move · scroll to zoom · right-drag to rotate and tilt · click a country
+            </p>
+          </div>
+
+          <div className="fixed bottom-4 left-[18rem] z-20 w-[min(36rem,calc(100vw-19rem))]">
+            <TimeSlider
+              quarters={quarters}
+              index={shownIndex}
+              onChange={(index) => {
+                play(false)
+                setQuarterIndex(index)
+              }}
+              playing={playing}
+              onTogglePlay={togglePlay}
+              disabled={!hasTimeline(exploreLayer)}
+            />
+          </div>
+
+          <SidePanel data={data} geo={selectedGeo} onClose={closePanel} />
+        </>
       )}
 
       {data && layer && (
-        <Legend
-          layer={layer}
-          source={sourceText(data)}
-        />
+        <Legend layer={layer} source={sourceText(data)} side={exploring ? 'left' : 'right'} />
       )}
     </div>
   )
