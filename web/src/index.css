@@ -1,0 +1,19 @@
+/* Loads Tailwind, so its class names (bg-..., text-..., p-...) work everywhere. */
+@import 'tailwindcss';
+
+/* Design colours from CLAUDE.md section 7.
+   Each line creates Tailwind classes, e.g. --color-bg gives bg-bg and text-bg. */
+@theme {
+  --color-bg: #0b1020;
+  --color-card: #121a2e;
+  --color-border: #24304d;
+  --color-text: #e6eaf2;
+  --color-muted: #8b95ad;
+  --color-accent: #4f8cff;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
