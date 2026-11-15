@@ -3,6 +3,7 @@ import { Button } from './components/Button'
 import { Legend } from './components/Legend'
 import { Map3D } from './components/Map3D'
 import { Story } from './components/Story'
+import { sourceText } from './data/helpers'
 import { loadData } from './data/loadData'
 import type { AppData } from './data/types'
 import { buildLayer } from './story/layers'
@@ -90,6 +91,7 @@ function App() {
 
       {data && (
         <Story
+          data={data}
           onActiveChange={setActive}
           onExplore={() => setExploring(true)}
           hidden={exploring}
@@ -108,7 +110,7 @@ function App() {
       {data && layer && (
         <Legend
           layer={layer}
-          source={data.meta.sources.map((s) => `${s.name} (${s.code})`).join(' · ')}
+          source={sourceText(data)}
         />
       )}
     </div>

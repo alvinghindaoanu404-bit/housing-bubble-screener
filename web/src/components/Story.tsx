@@ -1,8 +1,15 @@
 import { useEffect, useRef } from 'react'
+import type { AppData } from '../data/types'
+import { EpisodesTimeline } from '../story/EpisodesTimeline'
+import { ModelMetricsCard } from '../story/ModelMetricsCard'
+import { MortgageCalculator } from '../story/MortgageCalculator'
+import { RomaniaPanel } from '../story/RomaniaPanel'
 import { SECTIONS } from '../story/sections'
+import type { PanelKey } from '../story/sections'
 import { Button } from './Button'
 
 interface StoryProps {
+  data: AppData
   /** Called with the number of the section that is now in the middle of the screen. */
   onActiveChange: (index: number) => void
   /** Called when the user presses "Explore the map". */
@@ -11,8 +18,22 @@ interface StoryProps {
   hidden: boolean
 }
 
+/** Draw the interactive piece that belongs to a card. */
+function Panel({ panel, data }: { panel: PanelKey; data: AppData }) {
+  switch (panel) {
+    case 'calculator':
+      return <MortgageCalculator />
+    case 'episodes':
+      return <EpisodesTimeline data={data} />
+    case 'metrics':
+      return <ModelMetricsCard data={data} />
+    case 'romania':
+      return <RomaniaPanel data={data} />
+  }
+}
+
 /** The story: one full-screen section per step, each holding a text card. */
-export function Story({ onActiveChange, onExplore, hidden }: StoryProps) {
+export function Story({ data, onActiveChange, onExplore, hidden }: StoryProps) {
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
 
   // An IntersectionObserver tells us when an element enters part of the screen.
@@ -61,7 +82,14 @@ export function Story({ onActiveChange, onExplore, hidden }: StoryProps) {
             ) : (
               <h2 className="mt-2 text-3xl font-bold">{section.title}</h2>
             )}
-            <p className="mt-4">{section.text}</p>
+
+            {section.text.map((paragraph) => (
+              <p key={paragraph} className="mt-4">
+                {paragraph.replace('{base_year}', String(data.meta.base_year))}
+              </p>
+            ))}
+
+            {section.panel && <Panel panel={section.panel} data={data} />}
 
             {index === 0 && (
               <Button className="mt-6" onClick={() => scrollTo(1)}>
