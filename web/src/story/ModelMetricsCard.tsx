@@ -57,7 +57,7 @@ export function ModelMetricsCard({ data }: { data: AppData }) {
           </ul>
         </div>
         <div>
-          <div className="font-bold text-stone">False alarms</div>
+          <div className="font-bold text-pale">False alarms</div>
           <ul className="mt-1 text-muted">
             {metrics.false_alarms.length === 0 && <li>None</li>}
             {metrics.false_alarms.map((item) => (

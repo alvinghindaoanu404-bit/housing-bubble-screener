@@ -1,24 +1,24 @@
 /* Loads Tailwind, so its class names (bg-..., text-..., p-...) work everywhere. */
 @import 'tailwindcss';
 
-/* The colour palette: Egyptian blue, stone blue and a little scarlet.
+/* The colour palette: carbon black, with green for low and race red for high.
    Each colour line creates Tailwind classes, e.g. --color-bg gives bg-bg and text-bg.
    The same colours are listed in src/theme.ts for the map and the charts:
    if you change one here, change it there too. */
 @theme {
-  /* Deep shades of Egyptian blue for the dark theme. */
-  --color-bg: #060c24;
-  --color-card: #0d1840;
-  --color-border: #253878;
-  /* Text: near-white, and stone blue for secondary text. */
-  --color-text: #eaf0f8;
-  --color-muted: #93a7be;
-  /* Light stone blue: the demo banner and quiet highlights. */
-  --color-stone: #a9bcd0;
-  /* Scarlet: buttons and sliders. Slightly deepened so white text stays readable. */
-  --color-accent: #e62000;
-  /* A lighter scarlet for small text and marks on the dark background. */
-  --color-accent-soft: #ff6a4d;
+  /* Carbon black: an almost-black page with slightly lighter cards. */
+  --color-bg: #09090b;
+  --color-card: #141417;
+  --color-border: #2a2a30;
+  /* Text: near-white, and grey for secondary text. */
+  --color-text: #f2f2f4;
+  --color-muted: #9a9aa3;
+  /* Pale sand: the demo banner and quiet highlights. */
+  --color-pale: #e6e2d3;
+  /* Race red: buttons and sliders. */
+  --color-accent: #d40000;
+  /* A lighter red for small text and marks on the dark background. */
+  --color-accent-soft: #ff6b5c;
   --font-sans: 'Inter', system-ui, 'Segoe UI', sans-serif;
 }
 

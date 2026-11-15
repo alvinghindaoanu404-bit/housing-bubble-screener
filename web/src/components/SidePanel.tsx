@@ -136,7 +136,7 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
                 <Line
                   dataKey="price_to_rent"
                   name="Price-to-rent"
-                  stroke={COLORS.stone}
+                  stroke={COLORS.pale}
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={false}
@@ -148,8 +148,8 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
 
           <h3 className="mt-6 font-bold">Interest rates (%)</h3>
           <div className="text-xs">
-            <span className="text-stone">— nominal</span>{' '}
-            <span className="ml-2" style={{ color: COLORS.egyptianBright }}>— real</span>
+            <span className="text-pale">— nominal</span>{' '}
+            <span className="ml-2" style={{ color: COLORS.green }}>— real</span>
           </div>
           <div className="mt-2 h-40">
             <ResponsiveContainer width="100%" height="100%">
@@ -161,7 +161,7 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
                 <Line
                   dataKey="rate_nominal"
                   name="Nominal rate"
-                  stroke={COLORS.stone}
+                  stroke={COLORS.pale}
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={false}
@@ -169,7 +169,7 @@ export function SidePanel({ data, geo, onClose }: SidePanelProps) {
                 <Line
                   dataKey="rate_real"
                   name="Real rate"
-                  stroke={COLORS.egyptianBright}
+                  stroke={COLORS.green}
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={false}

@@ -28,7 +28,7 @@ const SWAY_DEGREES = 12
 const SWAY_PERIOD_S = 24
 const SWAY_DELAY_S = 2
 // Countries in a bubble episode glow: a light overlay that fades in and out.
-const GLOW_COLOR: RGB = [226, 236, 248]
+const GLOW_COLOR: RGB = [245, 242, 232]
 const GLOW_PERIOD_S = 1.6
 // The tooltip flips to the left of the mouse this close to the right edge.
 const TOOLTIP_FLIP_PX = 240

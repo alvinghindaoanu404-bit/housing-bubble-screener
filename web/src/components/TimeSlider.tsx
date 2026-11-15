@@ -16,7 +16,7 @@ export function TimeSlider({ quarters, index, onChange, playing, onTogglePlay }:
         type="button"
         onClick={onTogglePlay}
         aria-label={playing ? 'Pause' : 'Play through the quarters'}
-        className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full bg-accent text-white transition duration-150 hover:scale-[1.04] hover:shadow-[0_0_24px_rgba(255,36,0,0.55)] active:scale-[0.97] motion-reduce:transition-none"
+        className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full bg-accent text-white transition duration-150 hover:scale-[1.04] hover:shadow-[0_0_24px_rgba(212,0,0,0.6)] active:scale-[0.97] motion-reduce:transition-none"
       >
         {playing ? '❚❚' : '▶'}
       </button>

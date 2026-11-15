@@ -203,7 +203,7 @@ function App() {
       {data?.meta.data_status === 'demo' && (
         <div
           role="status"
-          className="fixed inset-x-0 top-0 z-30 bg-stone px-4 py-2 text-center font-bold text-bg"
+          className="fixed inset-x-0 top-0 z-30 bg-pale px-4 py-2 text-center font-bold text-bg"
         >
           DEMO DATA — not thesis results
         </div>

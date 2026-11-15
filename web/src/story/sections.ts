@@ -75,7 +75,7 @@ export const SECTIONS: StorySection[] = [
     text: [
       'A high price is not automatically a bubble. What matters is the price compared with what supports it: the rent a home could earn and the income of the people buying it.',
       'Price-to-rent is the "P/E ratio of houses": the price of the asset divided by the income it brings. Price-to-income measures affordability. Both are expressed relative to each country\'s own long-run average, where 1.0 means "average".',
-      'The map shows overvaluation: how many standard deviations a country\'s valuation sits above its own average (red) or below it (blue).',
+      'The map shows overvaluation: how many standard deviations a country\'s valuation sits above its own average (red) or below it (green).',
     ],
     layer: 'overvaluation',
     camera: EUROPE_MEDIUM,
