@@ -2,6 +2,8 @@
 
 An interactive 3D dashboard for a bachelor thesis at ASE Bucharest (FABIZ): **an early-warning screener for housing bubbles in EU countries and their exposure to interest-rate risk**, with Romania as the case study.
 
+**Live site: https://alvinghindaoanu404-bit.github.io/housing-bubble-screener/**
+
 > **Status: demo data.** The dashboard currently runs on generated demo data, and says so in a banner at the top of the page. None of the numbers are thesis results. The real results replace the demo files once the thesis analysis is done.
 
 ## What it does
